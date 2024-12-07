@@ -203,7 +203,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   )
                 : const Text(
-                    "Borrar",
+                    "Delete",
                     style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
           ),
