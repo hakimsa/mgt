@@ -16,13 +16,14 @@ class HomePage extends StatefulWidget {
 
 class _HomepageState extends State<HomePage> {
   TextEditingController searchController = TextEditingController();
-  ProviderUser providerUser = ProviderUser();
   bool _loading = false;
+  double _scale = 1.0;
 
   @override
   void initState() {
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).getUsersData();
+    Future.microtask(
+        () => Provider.of<UserProvider>(context, listen: false).getUsersData());
   }
 
   void _onSubmit() async {
@@ -36,8 +37,8 @@ class _HomepageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Bienvenido a UPM Style",
-            style: TextStyle(color: Colors.black)),
-        backgroundColor: Color.fromARGB(255, 123, 244, 246),
+            style: TextStyle(color: const Color.fromARGB(255, 107, 108, 108))),
+        backgroundColor: Colors.blueGrey[800],
         elevation: 0,
         centerTitle: true,
       ),
@@ -63,7 +64,8 @@ class _HomepageState extends State<HomePage> {
           child: Column(
             children: [
               FutureBuilder<List<User>>(
-                future: providerUser.getallUsers(),
+                future: Provider.of<UserProvider>(context, listen: false)
+                    .getallUsers(),
                 builder:
                     (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -90,29 +92,9 @@ class _HomepageState extends State<HomePage> {
                     children: [
                       Icon(Icons.person_2_sharp,
                           color: Color.fromARGB(255, 2, 120, 122), size: 70),
-                      SizedBox(
-                        width: 350,
-                        child: TextField(
-                          controller: searchController,
-                          decoration: InputDecoration(
-                            hintText: "Buscar usuarios...",
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: () {
-                                showSearch(
-                                  context: context,
-                                  delegate: ProviderSearchData(),
-                                );
-                              },
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                              borderSide: BorderSide(color: Colors.blueAccent),
-                            ),
-                          ),
-                        ),
-                      ),
                       SizedBox(height: 16),
+                      _buttonSearch(),
+                      SizedBox(height: 26),
                       Container(
                         decoration: BoxDecoration(
                           color: Color.fromARGB(63, 111, 84, 1),
@@ -187,5 +169,33 @@ class _HomepageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget _buttonSearch() {
+    return MouseRegion(
+      onEnter: (_) => _updateScale(1.2),
+      onExit: (_) => _updateScale(1.0),
+      child: AnimatedScale(
+        scale: _scale,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+        child: IconButton(
+          icon: Icon(Icons.search,
+              color: const Color.fromARGB(255, 20, 180, 44), size: 48),
+          onPressed: () {
+            showSearch(
+              context: context,
+              delegate: ProviderSearchData(),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _updateScale(double scale) {
+    if (_scale != scale) {
+      setState(() => _scale = scale);
+    }
   }
 }

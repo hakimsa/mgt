@@ -105,14 +105,17 @@ class _DetailScreenState extends State<DetailScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Avatar del usuario
-          CircleAvatar(
-            backgroundImage: NetworkImage(widget.user.avatar),
-            radius: 60,
-            backgroundColor: Colors.grey[200],
-            onBackgroundImageError: (_, __) => const Icon(
-              Icons.broken_image,
-              size: 50,
-              color: Colors.grey,
+          Hero(
+            tag: widget.user.id,
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(widget.user.avatar),
+              radius: 60,
+              backgroundColor: Colors.blueGrey[800],
+              onBackgroundImageError: (_, __) => const Icon(
+                Icons.broken_image,
+                size: 50,
+                color: Colors.grey,
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -141,27 +144,26 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
 
           const SizedBox(height: 30),
-          Divider(color: Colors.grey[300], thickness: 1),
 
           // Detalles adicionales del usuario
-          buildDetailSection("Personal Info", [
-            buildDetailItem("Description", widget.user.description),
-            buildDetailItem("Nation", widget.user.nacion),
-            buildDetailItem("Phone", widget.user.telefon),
-            buildDetailItem("Language", widget.user.lenguage),
+          buildDetailSection(" Personal Info", [
+            buildDetailItem(" Description", widget.user.description),
+            buildDetailItem(" Nation", widget.user.nacion),
+            buildDetailItem(" Phone", widget.user.telefon),
+            buildDetailItem(" Language", widget.user.lenguage),
           ]),
           const SizedBox(height: 20),
 
-          buildDetailSection("Professional Info", [
-            buildDetailItem("Role", widget.user.role),
-            buildDetailItem("Education", widget.user.formacion),
-            buildDetailItem("Social Media", widget.user.redes),
+          buildDetailSection(" Professional Info", [
+            buildDetailItem(" Role", widget.user.role),
+            buildDetailItem(" Education", widget.user.formacion),
+            buildDetailItem(" Social Media", widget.user.redes),
           ]),
           const SizedBox(height: 20),
 
-          buildDetailSection("Security Info", [
-            buildDetailItem("Token", widget.user.token),
-            buildDetailItem("Password", widget.user.password),
+          buildDetailSection(" Security Info", [
+            buildDetailItem(" Token", widget.user.token),
+            buildDetailItem(" Password", widget.user.password),
           ]),
 
           const SizedBox(height: 30),
@@ -183,6 +185,7 @@ class _DetailScreenState extends State<DetailScreen> {
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           ),
+          const SizedBox(height: 20),
           // Botón para borrar
           ElevatedButton(
             onPressed: _loading
@@ -286,38 +289,43 @@ class _DetailScreenState extends State<DetailScreen> {
 
 // Sección de detalles con título
   Widget buildDetailSection(String title, List<Widget> children) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
+    return Card(
+      color: const Color.fromARGB(70, 0, 52, 44),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 15),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(221, 1, 31, 29),
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        ...children,
-        const SizedBox(height: 20),
-        Divider(color: Colors.grey[300], thickness: 1),
-      ],
+          const SizedBox(height: 10),
+          ...children,
+          const SizedBox(height: 20),
+        ],
+      ),
     );
   }
 
 // Detalle de un campo
   Widget buildDetailItem(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
             "$label: ",
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
-              color: Colors.black87,
+              color: Color.fromARGB(255, 10, 61, 66),
             ),
           ),
           Expanded(
@@ -325,7 +333,7 @@ class _DetailScreenState extends State<DetailScreen> {
               value,
               style: const TextStyle(
                 fontSize: 16,
-                color: Colors.black54,
+                color: Color.fromARGB(137, 240, 234, 234),
               ),
             ),
           ),
@@ -339,138 +347,145 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget buildEditForm(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(15),
-      child: Column(
-        children: [
-          TextFormField(
-            controller: _controllerEmail,
-            decoration: const InputDecoration(labelText: "Email"),
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            controller: _controllerFirstname,
-            decoration: const InputDecoration(labelText: "Firstname"),
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            controller: _controllerLastname,
-            decoration: const InputDecoration(labelText: "Lastname"),
-          ),
-          const SizedBox(height: 15),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: _controllerAvatar,
-                  decoration: const InputDecoration(labelText: "Avatar URL"),
+      child: Card(
+        elevation: 5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: _controllerEmail,
+              decoration: const InputDecoration(labelText: "Email"),
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _controllerFirstname,
+              decoration: const InputDecoration(labelText: "Firstname"),
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _controllerLastname,
+              decoration: const InputDecoration(labelText: "Lastname"),
+            ),
+            const SizedBox(height: 15),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _controllerAvatar,
+                    decoration: const InputDecoration(labelText: "Avatar URL"),
+                  ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              CircleAvatar(
-                backgroundImage: NetworkImage(_controllerAvatar.text),
-                radius: 30,
-                onBackgroundImageError: (_, __) =>
-                    const Icon(Icons.broken_image),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Address"),
-            initialValue: widget.user.addess,
-            onChanged: (value) => widget.user.addess = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Age"),
-            initialValue: widget.user.age.toString(),
-            keyboardType: TextInputType.number,
-            onChanged: (value) =>
-                widget.user.age = int.tryParse(value) ?? widget.user.age,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Description"),
-            initialValue: widget.user.description,
-            onChanged: (value) => widget.user.description = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Nation"),
-            initialValue: widget.user.nacion,
-            onChanged: (value) => widget.user.nacion = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            controller: _controllerRole,
-            decoration: const InputDecoration(labelText: "Role"),
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Phone"),
-            initialValue: widget.user.telefon,
-            keyboardType: TextInputType.phone,
-            onChanged: (value) => widget.user.telefon = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Token"),
-            initialValue: widget.user.token,
-            onChanged: (value) => widget.user.token = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Password"),
-            initialValue: widget.user.password,
-            obscureText: true,
-            onChanged: (value) => widget.user.password = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Education"),
-            initialValue: widget.user.formacion,
-            onChanged: (value) => widget.user.formacion = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Language"),
-            initialValue: widget.user.lenguage,
-            onChanged: (value) => widget.user.lenguage = value,
-          ),
-          const SizedBox(height: 15),
-          TextFormField(
-            decoration: const InputDecoration(labelText: "Social Media Links"),
-            initialValue: widget.user.redes,
-            onChanged: (value) => widget.user.redes = value,
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: _isUpdating
-                    ? null
-                    : () {
-                        updateUser(context);
-                      },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: _isUpdating
-                    ? const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      )
-                    : const Text("Guardar"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    isEditing = false;
-                  });
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                child: const Text("Cancelar"),
-              ),
-            ],
-          ),
-        ],
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  backgroundImage: NetworkImage(_controllerAvatar.text),
+                  radius: 30,
+                  onBackgroundImageError: (_, __) =>
+                      const Icon(Icons.broken_image),
+                ),
+              ],
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Address"),
+              initialValue: widget.user.addess,
+              onChanged: (value) => widget.user.addess = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Age"),
+              initialValue: widget.user.age.toString(),
+              keyboardType: TextInputType.number,
+              onChanged: (value) =>
+                  widget.user.age = int.tryParse(value) ?? widget.user.age,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Description"),
+              initialValue: widget.user.description,
+              onChanged: (value) => widget.user.description = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Nation"),
+              initialValue: widget.user.nacion,
+              onChanged: (value) => widget.user.nacion = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              controller: _controllerRole,
+              decoration: const InputDecoration(labelText: "Role"),
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Phone"),
+              initialValue: widget.user.telefon,
+              keyboardType: TextInputType.phone,
+              onChanged: (value) => widget.user.telefon = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Token"),
+              initialValue: widget.user.token,
+              onChanged: (value) => widget.user.token = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Password"),
+              initialValue: widget.user.password,
+              obscureText: true,
+              onChanged: (value) => widget.user.password = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Education"),
+              initialValue: widget.user.formacion,
+              onChanged: (value) => widget.user.formacion = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration: const InputDecoration(labelText: "Language"),
+              initialValue: widget.user.lenguage,
+              onChanged: (value) => widget.user.lenguage = value,
+            ),
+            const SizedBox(height: 15),
+            TextFormField(
+              decoration:
+                  const InputDecoration(labelText: "Social Media Links"),
+              initialValue: widget.user.redes,
+              onChanged: (value) => widget.user.redes = value,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _isUpdating
+                      ? null
+                      : () {
+                          updateUser(context);
+                        },
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: _isUpdating
+                      ? const CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
+                        )
+                      : const Text("Guardar"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      isEditing = false;
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: const Text("Cancelar"),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -479,9 +494,13 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing
-            ? "Editar Usuario: ${widget.user.id}"
-            : "Detalle del Usuario: ${widget.user.id}"),
+        backgroundColor: Colors.blueGrey[800],
+        title: Text(
+          isEditing
+              ? "Editar Usuario: ${widget.user.id}"
+              : "Detalle del Usuario: ${widget.user.id}",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),

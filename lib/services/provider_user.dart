@@ -20,7 +20,7 @@ class ProviderUser {
 
 //get All users
   Future<List<User>> getallUsers() async {
-    String url = "http://0.0.0.0:8092/api/v1/users/all";
+    String url = "http://localhost:8092/api/v1/users/all";
     // Await the http get response, then decode the json-formatted response.
     var response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
@@ -226,4 +226,6 @@ class UserProvider extends ChangeNotifier {
       throw Exception('Error al actualizar el usuario: $e');
     }
   }
+
+  getallUsers() {}
 }
